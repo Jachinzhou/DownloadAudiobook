@@ -4,7 +4,7 @@ import requests
 from selenium import webdriver
 from time import sleep
 
-i = 16
+i = 128
 # url = str('https://ting55.com/book/13679-%d' % (i))
 
 
@@ -47,21 +47,21 @@ while i < 752:
     r = requests.post(url, data, headers=headers)
 
     print(r.text)
-    durl = re.findall(r'"([a-zA-Z0-9]+)"', str(r.text))
-    print(durl)
+    durl = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', str(r.text))
+    print(durl[0])
     #     # driver = webdriver.Chrome()
     #     # driver.get('https://ting55.com/book/13679-%d' % (i))
     #     # src = driver.find_element_by_xpath('//*[@id="jp_audio_0"]').get_attribute('src')
     #     # print(src)
     #
-    #     r = requests.get('https://ting55.com/book/13679-%d' % (i))
-    #
-    # path = "%s.mp3" % (i)
-    # print(path)
-    #
-    # with open(path, "wb") as f:
-    #     f.write(r.content)
-    # f.close()
+    books = requests.get(durl[0])
+
+    path = "%s.mp3" % (i)
+    print(path)
+
+    with open(path, "wb") as f:
+        f.write(books.content)
+    f.close()
     i += 1
 #     sleep(3)
 #     #driver.quit()
